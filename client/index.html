@@ -10,6 +10,7 @@
     <div id="playercount"></div>
     <div id="resourcecount"></div>
     <div id="maxresource"></div>
+    <div id="averages"></div>
   </div>
 
   <script type="application/javascript">
@@ -68,9 +69,37 @@
         }
       }
 
+      var averages = {};
+      if (world.humans.length) {
+        for (var i in world.humans[0].needs) {
+          averages[world.humans[0].needs[i].name] = 0;
+        }
+      }
+
+      for (var i in world.humans) {
+        for (var ix in world.humans[i].needs) {
+          averages[world.humans[i].needs[ix].name] += world.humans[i].needs[ix].value;
+        }
+      }
+
+      for (var i in averages) {
+        averages[i] = averages[i] / world.humans.length;
+      }
+
       $('#playercount').html('Player Count: ' + world.humans.length);
       $('#resourcecount').html('Total Resources: ' + Math.floor(resourceCount));
       $('#maxresource').html('Resource Growth Rate: ' + Math.floor(maxResource));
+
+      var html = '<p>Player Averages: </p>';
+      html += '<ul>';
+
+      for (var i in averages) {
+        html += '<li>' + i + ': ' + Math.floor(averages[i]) + '</li>';
+      }
+
+      html +=' </ul>';
+
+      $('#averages').html(html);
     }, 100);
   </script>
 
