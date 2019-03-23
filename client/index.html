@@ -8,6 +8,8 @@
   <div id="document">
     <canvas id="world" width="400" height="400"></canvas>
     <div id="playercount"></div>
+    <div id="resourcecount"></div>
+    <div id="maxresource"></div>
   </div>
 
   <script type="application/javascript">
@@ -56,9 +58,20 @@
       });
     }, 50);
 
-    setInterval(function updatePlayerCount() {
-      $('#playercount').html('Count: ' + world.humans.length);
-    }, 1000);
+    setInterval(function updateCounts() {
+      var resourceCount = 0;
+      var maxResource = 0;
+      for (var i in world.objects) {
+        for (var ix in world.objects[i].provisions) {
+          resourceCount += world.objects[i].provisions[ix].value;
+          maxResource += world.objects[i].provisions[ix].original;
+        }
+      }
+
+      $('#playercount').html('Player Count: ' + world.humans.length);
+      $('#resourcecount').html('Total Resources: ' + Math.floor(resourceCount));
+      $('#maxresource').html('Resource Growth Rate: ' + Math.floor(maxResource));
+    }, 100);
   </script>
 
   <style>
