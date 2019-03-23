@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Project</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="document">
+    <canvas id="world" width="400" height="400"></canvas>
+    <div id="playercount"></div>
+  </div>
+
+  <script type="application/javascript">
+    var world = {};
+
+    function drawCanvas() {
+      var c = document.getElementById('world');
+      var ctx = c.getContext('2d');
+
+      ctx.clearRect(0, 0, c.width, c.height);
+
+      for (let i in world.objects) {
+        let obj = world.objects[i];
+        ctx.strokeStyle = '#333';
+        ctx.beginPath();
+        ctx.arc(obj.xpos, obj.ypos, 5, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+
+      for (let i in world.humans) {
+        let hum = world.humans[i];
+
+        if (hum.age <= 1) {
+          ctx.strokeStyle = 'blue';
+        }
+        if (hum.age >= 2) {
+          ctx.strokeStyle = 'green';
+        }
+        if (hum.age >= 5) {
+          ctx.strokeStyle = 'orange';
+        }
+        if (hum.age >= 10) {
+          ctx.strokeStyle = 'red';
+        }
+
+        ctx.beginPath();
+        ctx.arc(hum.xpos, hum.ypos, 2, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    }
+
+    setInterval(function updateWorld() {
+      $.getJSON('/world', function getWorld(res) {
+        world = res;
+        drawCanvas();
+      });
+    }, 50);
+
+    setInterval(function updatePlayerCount() {
+      $('#playercount').html('Count: ' + world.humans.length);
+    }, 1000);
+  </script>
+
+  <style>
+    #document {
+      display: block;
+      width: 800px;
+      margin: auto;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</body>
+</html>

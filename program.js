@@ -1,6 +1,6 @@
 
-const server = require('lib/server');
-const world = require('lib/World');
+const server = require('./client/server');
+const World = require('./lib/World');
 
 let world = new World();
 server.addDataPoint('world', world);

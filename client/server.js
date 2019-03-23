@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
+const fs = require('fs');
 
-app.get('/', (req, res) => res.end('Hello world'));
+let html = fs.readFileSync(__dirname + '/index.html');
+app.get('/', (req, res) => res.set('Content-Type', 'text/html').end(html));
 
 module.exports = {};
 
@@ -10,7 +12,7 @@ module.exports = {};
  */
 module.exports.addDataPoint = (name, obj) => {
   app.get(`/${name}`, (req, res) => {
-    res.set('Content-Type', 'application/json').end(JSON.stringify(obj));
+    res.set('Content-Type', 'application/json').end(JSON.stringify(obj, null, 2));
   });
 };
 
