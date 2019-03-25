@@ -30,6 +30,14 @@
         ctx.stroke();
       }
 
+      for (let i in world.blockers) {
+        let blocker = world.blockers[i];
+        ctx.strokeStyle = 'brown';
+        ctx.beginPath();
+        ctx.arc(blocker.xpos, blocker.ypos, (blocker.size / 2), 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+
       for (let i in world.humans) {
         let hum = world.humans[i];
 
