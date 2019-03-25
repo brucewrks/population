@@ -61,8 +61,19 @@
     }
 
     setInterval(function updateWorld() {
-      $.getJSON('/world', function getWorld(res) {
-        world = res;
+      var worldToUpdate;
+      var connection;
+
+      setTimeout(function updateWorldVar() {
+        if (worldToUpdate) {
+          world = worldToUpdate;
+        } else {
+          connection.abort();
+        }
+      }, 3000); // All updates are 3 seconds behind.
+
+      connection = $.getJSON('/world', function getWorld(res) {
+        worldToUpdate = res;
         drawCanvas();
       });
     }, 50);
